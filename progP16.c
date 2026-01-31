@@ -563,6 +563,18 @@ void Read16Fxxx(int dim,int dim2,int dim3,int vdd)
 	memCODE_W=(WORD*)malloc(sizeof(WORD)*sizeW);
 	unsigned int start=GetTickCount();
 	j=0;
+    // --- Universal hard reset before reading PIC16 ---
+    bufferU[j++] = EXT_PORT;
+    bufferU[j++] = 0;      // MCLR=0
+    bufferU[j++] = 0;
+    bufferU[j++] = EN_VPP_VCC;
+    bufferU[j++] = 0x0;    // VDD off
+    bufferU[j++] = WAIT_T3;
+    bufferU[j++] = EXT_PORT;
+    bufferU[j++] = 0x08;   // MCLR=1
+    bufferU[j++] = 0;
+    bufferU[j++] = WAIT_T3;
+
 	bufferU[j++]=SET_PARAMETER;
 	bufferU[j++]=SET_T1T2;
 	bufferU[j++]=1;						//T1=1u
@@ -6709,4 +6721,5 @@ void Write16F18xxx(int dim,int dim2,int options)
 	}
 	PrintStatusClear();			//clear status report
 }
+
 
