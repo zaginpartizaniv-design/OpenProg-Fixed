@@ -1,0 +1,147 @@
+diff --git a/progAVR.c b/progAVR.c
+index 1111111..2222222 100644
+--- a/progAVR.c
++++ b/progAVR.c
+@@ -120,6 +120,18 @@ int ReadAT(...)
+     j=1;
+
++    // --- UNIVERSAL HARD RESET BEFORE READING AVR ---
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0;      // MCLR=0
++    bufferU[j++] = 0;
++    bufferU[j++] = EN_VPP_VCC;
++    bufferU[j++] = 0x0;    // VDD off
++    bufferU[j++] = WAIT_T3;
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0x08;   // MCLR=1
++    bufferU[j++] = 0;
++    bufferU[j++] = WAIT_T3;
++
+     bufferU[j++] = SET_PARAMETER;
+     bufferU[j++] = SET_T3;
+
+diff --git a/progEEPROM.c b/progEEPROM.c
+index 3333333..4444444 100644
+--- a/progEEPROM.c
++++ b/progEEPROM.c
+@@ -95,6 +95,18 @@ int ReadEEPROM(...)
+     j=1;
+
++    // --- UNIVERSAL HARD RESET BEFORE READING EEPROM ---
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0;
++    bufferU[j++] = 0;
++    bufferU[j++] = EN_VPP_VCC;
++    bufferU[j++] = 0x0;
++    bufferU[j++] = WAIT_T3;
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0x08;
++    bufferU[j++] = 0;
++    bufferU[j++] = WAIT_T3;
++
+     bufferU[j++] = SET_PARAMETER;
+
+diff --git a/progP12.c b/progP12.c
+index 5555555..6666666 100644
+--- a/progP12.c
++++ b/progP12.c
+@@ -110,6 +110,18 @@ int Read12Fxxx(...)
+     j=1;
+
++    // --- UNIVERSAL HARD RESET BEFORE READING PIC12 ---
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0;
++    bufferU[j++] = 0;
++    bufferU[j++] = EN_VPP_VCC;
++    bufferU[j++] = 0x0;
++    bufferU[j++] = WAIT_T3;
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0x08;
++    bufferU[j++] = 0;
++    bufferU[j++] = WAIT_T3;
++
+     bufferU[j++] = SET_PARAMETER;
+
+diff --git a/progP16.c b/progP16.c
+index 7777777..8888888 100644
+--- a/progP16.c
++++ b/progP16.c
+@@ -130,6 +130,18 @@ int Read16Fxxx(...)
+     j=1;
+
++    // --- UNIVERSAL HARD RESET BEFORE READING PIC16 ---
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0;
++    bufferU[j++] = 0;
++    bufferU[j++] = EN_VPP_VCC;
++    bufferU[j++] = 0x0;
++    bufferU[j++] = WAIT_T3;
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0x08;
++    bufferU[j++] = 0;
++    bufferU[j++] = WAIT_T3;
++
+     bufferU[j++] = SET_PARAMETER;
+
+diff --git a/progP18.c b/progP18.c
+index 9999999..aaaaaaa 100644
+--- a/progP18.c
++++ b/progP18.c
+@@ -140,6 +140,18 @@ int Read18Fxxx(...)
+     j=1;
+
++    // --- UNIVERSAL HARD RESET BEFORE READING PIC18 ---
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0;
++    bufferU[j++] = 0;
++    bufferU[j++] = EN_VPP_VCC;
++    bufferU[j++] = 0x0;
++    bufferU[j++] = WAIT_T3;
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0x08;
++    bufferU[j++] = 0;
++    bufferU[j++] = WAIT_T3;
++
+     bufferU[j++] = SET_PARAMETER;
+
+diff --git a/progP24.c b/progP24.c
+index bbbbbbb..ccccccc 100644
+--- a/progP24.c
++++ b/progP24.c
+@@ -150,6 +150,18 @@ int Read24Fxxx(...)
+     j=1;
+
++    // --- UNIVERSAL HARD RESET BEFORE READING PIC24 ---
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0;
++    bufferU[j++] = 0;
++    bufferU[j++] = EN_VPP_VCC;
++    bufferU[j++] = 0x0;
++    bufferU[j++] = WAIT_T3;
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0x08;
++    bufferU[j++] = 0;
++    bufferU[j++] = WAIT_T3;
++
+     bufferU[j++] = SET_PARAMETER;
+
+diff --git a/progP32.c b/progP32.c
+index ddddddd..eeeeeee 100644
+--- a/progP32.c
++++ b/progP32.c
+@@ -160,6 +160,18 @@ int Read32x(...)
+     j=1;
+
++    // --- UNIVERSAL HARD RESET BEFORE READING PIC32 ---
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0;
++    bufferU[j++] = 0;
++    bufferU[j++] = EN_VPP_VCC;
++    bufferU[j++] = 0x0;
++    bufferU[j++] = WAIT_T3;
++    bufferU[j++] = EXT_PORT;
++    bufferU[j++] = 0x08;
++    bufferU[j++] = 0;
++    bufferU[j++] = WAIT_T3;
++
+     bufferU[j++] = SET_PARAMETER;
