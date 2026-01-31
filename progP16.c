@@ -789,6 +789,21 @@ void Read16Fxxx(int dim,int dim2,int dim3,int vdd)
 		CloseLogFile();
 	}
 	PrintStatusClear();			//clear status report
+    // --- Exit programming mode: full hardware reset ---
+    j = 0;
+    bufferU[j++] = EN_VPP_VCC;
+    bufferU[j++] = 0x0;     // VDD off
+    bufferU[j++] = EXT_PORT;
+    bufferU[j++] = 0;       // MCLR=0
+    bufferU[j++] = 0;
+    bufferU[j++] = WAIT_T3;
+    bufferU[j++] = EXT_PORT;
+    bufferU[j++] = 0x08;    // MCLR=1
+    bufferU[j++] = 0;
+    bufferU[j++] = WAIT_T3;
+    bufferU[j++] = FLUSH;
+
+    writeP();
 }
 
 void Read16F1xxx(int dim,int dim2,int dim3,int options)
