@@ -574,7 +574,7 @@ void Read16Fxxx(int dim,int dim2,int dim3,int vdd)
     bufferU[j++] = 0x08;   // MCLR=1
     bufferU[j++] = 0;
     bufferU[j++] = WAIT_T3;
-
+	bufferU[j++] = VREG_EN;
 	bufferU[j++]=SET_PARAMETER;
 	bufferU[j++]=SET_T1T2;
 	bufferU[j++]=1;						//T1=1u
@@ -725,16 +725,31 @@ void Read16Fxxx(int dim,int dim2,int dim3,int vdd)
 		}
 		else PrintMessage(strings[S_Compl]);
 	}
-	bufferU[j++]=NOP;				//exit program mode
-	bufferU[j++]=EN_VPP_VCC;
-	bufferU[j++]=1;					//VDD
-	bufferU[j++]=EN_VPP_VCC;
-	bufferU[j++]=0x0;
-	bufferU[j++]=SET_CK_D;
-	bufferU[j++]=0x0;
-	bufferU[j++]=FLUSH;
+	// --- Exit programming mode: full hardware reset ---
+	bufferU[j++] = EN_VPP_VCC;
+	bufferU[j++] = 0x02;     // VDD = Hi-Z, VPP=0
+
+	bufferU[j++] = EXT_PORT;
+	bufferU[j++] = 0;        // MCLR=0
+	bufferU[j++] = 0;
+	bufferU[j++] = WAIT_T3;
+
+	bufferU[j++] = EXT_PORT;
+	bufferU[j++] = 0x08;     // MCLR=1
+	bufferU[j++] = 0;
+	bufferU[j++] = WAIT_T3;
+
+	bufferU[j++] = SET_CK_D;
+	bufferU[j++] = 0x00;
+
+	// --- выключаем DC-DC регулятор ---
+	bufferU[j++] = VREG_DIS;
+
+	bufferU[j++] = FLUSH;
+
 	for(;j<DIMBUF;j++) bufferU[j]=0x0;
 	PacketIO(2);
+	Sleep(300);
 	unsigned int stop=GetTickCount();
 	PrintStatusClear();			//clear status report
 //****************** visualize ********************
@@ -789,21 +804,6 @@ void Read16Fxxx(int dim,int dim2,int dim3,int vdd)
 		CloseLogFile();
 	}
 	PrintStatusClear();			//clear status report
-    // --- Exit programming mode: full hardware reset ---
-    j = 0;
-    bufferU[j++] = EN_VPP_VCC;
-    bufferU[j++] = 0x0;     // VDD off
-    bufferU[j++] = EXT_PORT;
-    bufferU[j++] = 0;       // MCLR=0
-    bufferU[j++] = 0;
-    bufferU[j++] = WAIT_T3;
-    bufferU[j++] = EXT_PORT;
-    bufferU[j++] = 0x08;    // MCLR=1
-    bufferU[j++] = 0;
-    bufferU[j++] = WAIT_T3;
-    bufferU[j++] = FLUSH;
-
-    writeP();
 }
 
 void Read16F1xxx(int dim,int dim2,int dim3,int options)
